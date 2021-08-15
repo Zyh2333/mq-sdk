@@ -9,14 +9,14 @@
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>rocket-mq</module>
-        <module>common</module>
+        <module>rocket-mq-sdk</module>
+        <module>mq-sdk-common</module>
     </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <rocketmq-sdk.version>0.0.1</rocketmq-sdk.version>
+        <rocketmq-sdk.version>0.0.1-SNAPSHOT</rocketmq-sdk.version>
     </properties>
 
     <dependencyManagement>
@@ -35,8 +35,14 @@
 
             <dependency>
                 <groupId>cn.edu.whu.zhuyuhan</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>mq-sdk-common</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.edu.whu.zhuyuhan</groupId>
+                <artifactId>rocket-mq-sdk</artifactId>
+                <version>${rocketmq-sdk.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

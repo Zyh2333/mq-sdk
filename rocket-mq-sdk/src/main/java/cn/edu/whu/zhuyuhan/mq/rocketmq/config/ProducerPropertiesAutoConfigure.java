@@ -1,10 +1,11 @@
 package cn.edu.whu.zhuyuhan.mq.rocketmq.config;
 
 import cn.edu.whu.zhuyuhan.mq.rocketmq.constant.PropertiesConstants;
+import cn.edu.whu.zhuyuhan.mq.rocketmq.producer.Producer;
 import cn.edu.whu.zhuyuhan.mq.rocketmq.producer.RocketMqProperties;
 import com.aliyun.openservices.ons.api.ONSFactory;
-import com.aliyun.openservices.ons.api.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ public class ProducerPropertiesAutoConfigure {
     private RocketMqProperties producerProperties;
 
     // producer 是单例的
+    @ConditionalOnMissingBean(com.aliyun.openservices.ons.api.Producer.class)
     @Bean
     public Producer producer() {
         Properties properties = new Properties();
@@ -35,8 +37,9 @@ public class ProducerPropertiesAutoConfigure {
         properties.setProperty(PropertiesConstants.TIME_OUT, producerProperties.getTimeoutMillis());
         properties.setProperty(PropertiesConstants.NAMESRV_ADDR, producerProperties.getNameServerDomain());
 //        properties.setProperty(PropertiesConstants.MQ_TYPE, "");
-        Producer producer = ONSFactory.createProducer(properties);
+        com.aliyun.openservices.ons.api.Producer producer = ONSFactory.createProducer(properties);
         producer.start();
-        return producer;
+        Producer producerWrapper = new Producer(producer);
+        return producerWrapper;
     }
 }
