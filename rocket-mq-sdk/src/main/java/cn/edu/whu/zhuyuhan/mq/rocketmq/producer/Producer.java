@@ -1,8 +1,10 @@
 package cn.edu.whu.zhuyuhan.mq.rocketmq.producer;
 
+import cn.edu.whu.zhuyuhan.mq.rocketmq.producer.callback.DefaultCallback;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.SendCallback;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
 
 /**
  * Author: Zhu yuhan
@@ -28,6 +30,27 @@ public class Producer {
     public void sendDelay(Message message, Long delay) {
         message.setStartDeliverTime(System.currentTimeMillis() + delay);
         this.producer.send(message);
+    }
+
+    public void sendDelayAsync(Message message, Long delay) {
+        message.setStartDeliverTime(System.currentTimeMillis() + delay);
+        this.producer.sendAsync(message, new DefaultCallback());
+    }
+
+    public void sendAtFixedTime(Message message, Long timeStamp) {
+        if (new Date().getTime() >= timeStamp) {
+            return;
+        }
+        message.setStartDeliverTime(timeStamp);
+        this.producer.send(message);
+    }
+
+    public void sendAtFixedTimeAsync(Message message, Long timeStamp) {
+        if (new Date().getTime() >= timeStamp) {
+            return;
+        }
+        message.setStartDeliverTime(timeStamp);
+        this.producer.sendAsync(message, new DefaultCallback());
     }
 
 }
