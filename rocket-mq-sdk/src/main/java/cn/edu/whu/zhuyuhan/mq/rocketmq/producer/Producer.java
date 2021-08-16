@@ -19,6 +19,10 @@ public class Producer {
         this.producer = producer;
     }
 
+    public void start() {
+        this.producer.start();
+    }
+
     public void send(Message message) {
         this.producer.send(message);
     }
@@ -51,6 +55,10 @@ public class Producer {
         }
         message.setStartDeliverTime(timeStamp);
         this.producer.sendAsync(message, new DefaultCallback());
+    }
+
+    public void shutdown() {
+        this.producer.shutdown();
     }
 
 }

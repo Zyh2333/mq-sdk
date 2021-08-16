@@ -1,6 +1,10 @@
 package cn.edu.whu.zhuyuhan.mq.rocketmq.producer;
 
+import com.aliyun.openservices.ons.api.MQType;
+import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.Properties;
 
 /**
  * Author: Zhu yuhan
@@ -25,6 +29,19 @@ public class RocketMqProperties {
     private String nameServerDomain;
 
     public RocketMqProperties() {
+    }
+
+    public Properties getMqProperties() {
+        Properties properties = new Properties();
+        properties.setProperty(PropertyKeyConst.AccessKey, this.ak);
+        properties.setProperty(PropertyKeyConst.SecretKey, this.sk);
+        properties.setProperty(PropertyKeyConst.GROUP_ID, this.producerGroup);
+        properties.setProperty(PropertyKeyConst.INSTANCE_ID, this.instanceId);
+        properties.setProperty(PropertyKeyConst.NAMESRV_ADDR, this.nameServerDomain);
+        properties.setProperty(PropertyKeyConst.SendMsgTimeoutMillis, this.timeoutMillis);
+        properties.setProperty(PropertyKeyConst.OnsChannel, this.onsChannel);
+        properties.setProperty(PropertyKeyConst.MQType, MQType.METAQ.getName());
+        return properties;
     }
 
     public String getProducerGroup() {
