@@ -27,7 +27,7 @@ public class ProducerPropertiesAutoConfigure {
 
     // producer 是单例的
     @ConditionalOnMissingBean(Producer.class)
-    @Bean
+    @Bean(destroyMethod = "shutdown")
     public Producer producer() {
         Properties properties = new Properties();
         properties.setProperty(PropertiesConstants.GROUP_ID, producerProperties.getProducerGroup());
